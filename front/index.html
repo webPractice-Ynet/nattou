@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
+        crossorigin="anonymous"
+    >
+    <style>
+        p {
+            margin: 0;
+        }
+    </style>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+    <script src="/js/jquery.js"></script>
+</head>
+<body>
+    <main class="container">
+        <h1 class="text-center">テスト</h1>
+        <div>
+            <form>
+                <div>
+                    <p>名前を記入してください。</p>
+                    <input type="text" name="name">
+                </div>
+                <div class="mt-3">
+                    <p>メールアドレスを記入してください。</p>
+                    <input type="text" name="email">
+                </div>
+                <div class="mt-3">
+                    <p>URI</p>
+                    <select name="uri">
+                        <option value="/">/</option>
+                        <option value="/users">/users</option>
+                        <option value="/test">/test</option>
+                    </select>
+                </div>
+                <div class="mt-5" id="js-Submit">
+                    <button>送信</button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <script>
+        
+        let targe_url, sendForm, post;
+
+    
+        $("#js-Submit").on("click", function(e){
+            e.preventDefault();
+            sendForm();
+        });
+        
+        target_url = ' http://localhost:3000';
+
+        sendForm = async function() { 
+            await post({
+                name: $('[name=name]').val(),
+                email: $('[name=email]').val(),
+            });
+        }
+
+        post = function(form_data) {
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    url: target_url + $('[name=uri]').val(),
+                    type:'post',
+                    data: JSON.stringify(form_data),
+                    dataType: "json",
+                })
+                .done(function(data){
+                    if (data.result === true) {
+                        // alert("通信：成功");
+                    } else {
+                        // alert("通信：失敗1 : " + data.message);
+                    }
+                }).fail(function(data) {
+                    alert("通信：失敗2");
+                });
+            });
+        }
+
+
+    </script>
+
+</body>
+</html>
